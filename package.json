@@ -1,0 +1,31 @@
+{
+    "name": "senselogic-lingo",
+    "description": "Text localization and processing.",
+    "version": "0.1.0",
+    "author": "Eric Pelzer <ecstatic.coder@gmail.com>",
+    "license": "LGPL-3.0-only",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/senselogic/LINGO.git"
+    },
+    "bugs": {
+        "url": "https://github.com/senselogic/LINGO/issues"
+    },
+    "homepage": "https://github.com/senselogic/LINGO",
+    "type": "module",
+    "main": "index.js",
+    "files": [
+        "conversion.js",
+        "index.js",
+        "localization.js",
+        "processing.js",
+        "test.js",
+        "README.md"
+    ],
+    "keywords": [
+        "lingo"
+    ],
+    "scripts": {
+        "test": "node test.js"
+    }
+}
