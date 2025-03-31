@@ -6,15 +6,15 @@ Text localization and processing.
 
 ## Localization
 
-Any string can be internationalized by providing additional translations by starting it with a language separator followed by a **language specifier**.
+Any string can be internationalized by starting additional translations with a language separator followed by a **language specifier**.
 
 Translations are tested from **right to left**, the first translation being used by **default**.
 
 A language specifier can contain one or several **language tags** separated by commas.
 
-A language tag can define a combination of **language code**, **country code** and **continent code**, separated by dashes : en, en-UK, -UK, en-AU, en--OC, --OC.
+A language tag can optionally combine a **language code**, a **country code** and a **continent code**, separated by dashes : en, en-UK, -UK, en-AU, en--OC, --OC.
 
-The continent code is automatically deduced from the country code when it is defined.
+The continent code can be automatically deduced from the country code.
 
 ```javascript
 setLanguageSeparator( '\n¨' );
