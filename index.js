@@ -107,7 +107,7 @@ export function getProcessedLocalizedTextBySlug(
     }
     else
     {
-        logWarning( 'Missing text slug : ' + textSlug );
+        console.warn( 'Missing text slug : ' + textSlug );
 
         return textSlug;
     }
@@ -130,7 +130,7 @@ export function getProcessedLocalizedMultilineTextBySlug(
     }
     else
     {
-        logWarning( 'Missing text slug : ' + textSlug );
+        console.warn( 'Missing text slug : ' + textSlug );
 
         return textSlug;
     }

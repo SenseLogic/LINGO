@@ -38,7 +38,7 @@ export function getTextBySlug(
     }
     else
     {
-        logWarning( 'Missing text slug : ' + textSlug );
+        console.warn( 'Missing text slug : ' + textSlug );
 
         return '';
     }
@@ -769,7 +769,7 @@ export function matchesValueSpecifier(
         }
     }
 
-    logWarning( 'Bad value specifier : ' + valueSpecifier );
+    console.warn( 'Bad value specifier : ' + valueSpecifier );
 
     return false;
 }
@@ -1060,7 +1060,7 @@ export function getLocalizedTextBySlug(
     }
     else
     {
-        logWarning( 'Missing text slug : ' + textSlug );
+        console.warn( 'Missing text slug : ' + textSlug );
 
         return textSlug;
     }
