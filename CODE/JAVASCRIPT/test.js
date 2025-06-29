@@ -48,11 +48,25 @@ function runTests(
 
     setLanguageCode( 'en' );
     checkResult( getTranslatedNumber( 1234567.89 ), '1234567.89' );
+    checkResult( getTranslatedNumber( 1234567.89, { usesGrouping: true } ), '1,234,567.89' );
+    checkResult( getTranslatedNumber( 1234567.89, { minimumDecimalDigitCount: 2 } ), '1234567.89' );
+    checkResult( getTranslatedNumber( 1234567.89, { minimumDecimalDigitCount: 2, usesGrouping: true } ), '1,234,567.89' );
+    //checkResult( getTranslatedNumber( 1234567.89, { minimumDecimalDigitCount: 4, usesGrouping: true } ), '1,234,567.8900' );
     checkResult( getTranslatedNumber( 1234567.89, { currency: 'USD' } ), '$1234567.89' );
+    checkResult( getTranslatedNumber( 1234567.89, { currency: 'USD', usesGrouping: true } ), '$1,234,567.89' );
+    checkResult( getTranslatedNumber( 1234567.89, { currency: 'USD', usesGrouping: true, minimumDecimalDigitCount: 2 } ), '$1,234,567.89' );
 
     setLanguageCode( 'fr' );
     checkResult( getTranslatedNumber( 1234567.89 ), '1234567,89' );
+    checkResult( getTranslatedNumber( 1234567.89, { usesGrouping: true } ), '1 234 567,89' );
     checkResult( getTranslatedNumber( 1234567.89, { currency: 'EUR' } ), '1234567,89 €' );
+    checkResult( getTranslatedNumber( 1234567.89, { currency: 'EUR', usesGrouping: true } ), '1 234 567,89 €' );
+
+    setLanguageCode( 'pt' );
+    checkResult( getTranslatedNumber( 1234567.89 ), '1234567,89' );
+    checkResult( getTranslatedNumber( 1234567.89, { usesGrouping: true } ), '1.234.567,89' );
+    checkResult( getTranslatedNumber( 1234567.89, { currency: 'BRL' } ), 'R\$ 1234567,89' );
+    checkResult( getTranslatedNumber( 1234567.89, { currency: 'BRL', usesGrouping: true } ), 'R\$ 1.234.567,89' );
 
     console.log( 'Testing : getTranslatedDate' );
 

@@ -505,56 +505,56 @@ export function getSubstitutionSuffix(
 export function getTranslatedNumber(
     number,
     {
-        minimumIntegerDigitCount = 1,
-        minimumFractionDigitCount = 0,
-        maximumFractionDigitCount = 8,
-        usesGrouping = false,
         unit = '',
-        currency = ''
+        currency = '',
+        minimumIntegerDigitCount = 1,
+        minimumDecimalDigitCount = 0,
+        maximumDecimalDigitCount = undefined,
+        usesGrouping = false
     } = {}
     )
 {
     let numberFormat;
-    
+
     if ( unit !== '' )
     {
-        numberFormat = 
-            new Intl.NumberFormat( 
-                languageSubtag, 
+        numberFormat =
+            new Intl.NumberFormat(
+                languageSubtag,
                 {
                     style: 'unit',
                     unit: unit,
-                    minimumFractionDigits: minimumFractionDigitCount,
-                    maximumFractionDigits: maximumFractionDigitCount,
+                    minimumFractionDigits: minimumDecimalDigitCount,
+                    maximumFractionDigits: maximumDecimalDigitCount,
                     useGrouping: usesGrouping
-                } 
+                }
                 );
     }
     else if ( currency !== '' )
     {
-        numberFormat = 
-            new Intl.NumberFormat( 
-                languageSubtag, 
+        numberFormat =
+            new Intl.NumberFormat(
+                languageSubtag,
                 {
                     style: 'currency',
                     currency: currency,
-                    minimumFractionDigits: minimumFractionDigitCount,
-                    maximumFractionDigits: maximumFractionDigitCount,
+                    minimumFractionDigits: minimumDecimalDigitCount,
+                    maximumFractionDigits: maximumDecimalDigitCount,
                     useGrouping: usesGrouping
-                } 
+                }
                 );
     }
-    else 
+    else
     {
-        numberFormat = 
-            new Intl.NumberFormat( 
-                languageSubtag, 
+        numberFormat =
+            new Intl.NumberFormat(
+                languageSubtag,
                 {
                     minimumIntegerDigits: minimumIntegerDigitCount,
-                    minimumFractionDigits: minimumFractionDigitCount,
-                    maximumFractionDigits: maximumFractionDigitCount,
+                    minimumFractionDigits: minimumDecimalDigitCount,
+                    maximumFractionDigits: maximumDecimalDigitCount,
                     useGrouping: usesGrouping
-                } 
+                }
                 );
     }
 
@@ -571,11 +571,11 @@ export function getTranslatedDate(
     } = {}
     )
 {
-    let options = 
+    let options =
         {
             timeZone: timeZone
         };
-    
+
     if ( pattern.includes( 'yyyy' ) )
     {
         options.year = 'numeric';
@@ -584,7 +584,7 @@ export function getTranslatedDate(
     {
         options.year = '2-digit';
     }
-    
+
     if ( pattern.includes( 'MM' ) )
     {
         options.month = '2-digit';
@@ -593,7 +593,7 @@ export function getTranslatedDate(
     {
         options.month = 'numeric';
     }
-    
+
     if ( pattern.includes( 'dd' ) )
     {
         options.day = '2-digit';
@@ -602,7 +602,7 @@ export function getTranslatedDate(
     {
         options.day = 'numeric';
     }
-    
+
     let dateTimeFormat = new Intl.DateTimeFormat( languageSubtag, options );
 
     return dateTimeFormat.format( date );
@@ -618,11 +618,11 @@ export function getTranslatedTime(
     } = {}
     )
 {
-    let options = 
+    let options =
         {
             timeZone: timeZone
         };
-    
+
     if ( pattern.includes( 'HH' ) )
     {
         options.hour = '2-digit';
@@ -643,7 +643,7 @@ export function getTranslatedTime(
         options.hour = 'numeric';
         options.hour12 = true;
     }
-    
+
     if ( pattern.includes( 'mm' ) )
     {
         options.minute = '2-digit';
@@ -652,7 +652,7 @@ export function getTranslatedTime(
     {
         options.minute = 'numeric';
     }
-    
+
     if ( pattern.includes( 'ss' ) )
     {
         options.second = '2-digit';
@@ -661,7 +661,7 @@ export function getTranslatedTime(
     {
         options.second = 'numeric';
     }
-    
+
     let dateTimeFormat = new Intl.DateTimeFormat( languageSubtag, options );
 
     return dateTimeFormat.format( time );

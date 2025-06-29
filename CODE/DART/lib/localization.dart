@@ -761,11 +761,9 @@ String getTranslatedNumber(
     {
         String pattern = '',
         int minimumIntegerDigitCount = 1,
-        int minimumFractionDigitCount = 0,
-        int maximumFractionDigitCount = 8,
-        bool usesGrouping = false,
-        String currency = '',
-        String symbol = ''
+        int minimumDecimalDigitCount = 0,
+        int maximumDecimalDigitCount = 8,
+        bool usesGrouping = false
     }
     )
 {
@@ -777,60 +775,35 @@ String getTranslatedNumber(
         {
             pattern += '0';
         }
-        
-        if ( minimumFractionDigitCount > 0 )
+
+        if ( minimumDecimalDigitCount > 0 )
         {
-            pattern += '.' + '0' * minimumFractionDigitCount;
+            pattern += '.' + '0' * minimumDecimalDigitCount;
         }
-            
-        if ( maximumFractionDigitCount > minimumFractionDigitCount )
+
+        if ( maximumDecimalDigitCount > minimumDecimalDigitCount )
         {
-            if ( minimumFractionDigitCount == 0 )
+            if ( minimumDecimalDigitCount == 0 )
             {
                 pattern += '.';
             }
 
-            pattern += '#' * ( maximumFractionDigitCount - minimumFractionDigitCount );
+            pattern += '#' * ( maximumDecimalDigitCount - minimumDecimalDigitCount );
         }
-        
-        if ( usesGrouping ) 
+
+        if ( usesGrouping )
         {
             pattern = '#,##' + pattern;
         }
     }
 
-    if ( currency.isNotEmpty )
-    {
-        var numberFormat = 
-            NumberFormat.currency(
-                locale: languageSubTag,
-                name: currency,
-                customPattern: pattern
-                );
+    var numberFormat =
+        NumberFormat(
+            pattern,
+            languageSubTag
+            );
 
-        return numberFormat.format( number );
-    }
-    else if ( symbol.isNotEmpty )
-    {
-        var numberFormat = 
-            NumberFormat.currency(
-                locale: languageSubTag,
-                symbol: symbol,
-                customPattern: pattern
-                );
-
-        return numberFormat.format( number );
-    }
-    else
-    {
-        var numberFormat = 
-            NumberFormat( 
-                pattern,
-                languageSubTag
-                );
-
-        return numberFormat.format( number );
-    }
+    return numberFormat.format( number );
 }
 
 // ~~
