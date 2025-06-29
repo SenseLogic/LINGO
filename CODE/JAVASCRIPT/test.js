@@ -7,13 +7,12 @@ import
         defineLineTag,
         defineTag,
         getBrowserLanguageCode,
-        getFormattedArrayText,
-        getFormattedCountryName,
-        getFormattedCurrencyName,
-        getFormattedDateText,
-        getFormattedNumberText,
-        getFormattedLanguageName,
-        getFormattedTimeText,
+        getTranslatedCountryName,
+        getTranslatedCurrencyName,
+        getTranslatedDate,
+        getTranslatedNumber,
+        getTranslatedLanguageName,
+        getTranslatedTime,
         getLocalizedText,
         getProcessedMultilineText,
         getProcessedText,
@@ -45,108 +44,65 @@ function checkResult(
 function runTests(
     )
 {
-    console.log( 'Testing : getFormattedNumberText' );
+    console.log( 'Testing : getTranslatedNumber' );
 
     setLanguageCode( 'en' );
-    checkResult( getFormattedNumberText( 1234567.89 ), '1,234,567.89' );
-    checkResult( getFormattedNumberText( 1234567.89, 'currency', 'USD' ), '$1,234,567.89' );
-    checkResult( getFormattedNumberText( 1234567.89, 'percent' ), '123,456,789%' );
+    checkResult( getTranslatedNumber( 1234567.89 ), '1234567.89' );
+    checkResult( getTranslatedNumber( 1234567.89, { currency: 'USD' } ), '$1234567.89' );
 
     setLanguageCode( 'fr' );
-    checkResult( getFormattedNumberText( 1234567.89 ), '1 234 567,89' );
-    checkResult( getFormattedNumberText( 1234567.89, 'currency', 'EUR' ), '1 234 567,89 €' );
-    checkResult( getFormattedNumberText( 0.89, 'percent' ), '89 %' );
+    checkResult( getTranslatedNumber( 1234567.89 ), '1234567,89' );
+    checkResult( getTranslatedNumber( 1234567.89, { currency: 'EUR' } ), '1234567,89 €' );
 
-    console.log( 'Testing : getFormattedDateText' );
+    console.log( 'Testing : getTranslatedDate' );
 
-    let date = new Date( '2024-08-08' );
+    let date = new Date( '2024-08-15' );
 
     setLanguageCode( 'en' );
-    checkResult( getFormattedDateText( date, undefined, 'GMT' ), '8/8/2024' );
-    checkResult( getFormattedDateText( date, undefined, 'UTC' ), '8/8/2024' );
-    checkResult( getFormattedDateText( date, 'full', 'GMT' ), 'Thursday, August 8, 2024' );
-    checkResult( getFormattedDateText( date, 'full', 'UTC' ), 'Thursday, August 8, 2024' );
-    checkResult( getFormattedDateText( date, undefined, 'GMT', 'numeric', 'long', 'numeric', 'long' ), 'Thursday, August 8, 2024' );
-    checkResult( getFormattedDateText( date, undefined, 'UTC', 'numeric', 'long', 'numeric', 'long' ), 'Thursday, August 8, 2024' );
+    checkResult( getTranslatedDate( date ), '08/15/2024' );
 
     setLanguageCode( 'fr' );
-    checkResult( getFormattedDateText( date, undefined, 'GMT' ), '08/08/2024' );
-    checkResult( getFormattedDateText( date, undefined, 'UTC' ), '08/08/2024' );
-    checkResult( getFormattedDateText( date, 'full', 'GMT' ), 'jeudi 8 août 2024' );
-    checkResult( getFormattedDateText( date, 'full', 'UTC' ), 'jeudi 8 août 2024' );
-    checkResult( getFormattedDateText( date, undefined, 'GMT', 'numeric', 'long', 'numeric', 'long' ), 'jeudi 8 août 2024' );
-    checkResult( getFormattedDateText( date, undefined, 'UTC', 'numeric', 'long', 'numeric', 'long' ), 'jeudi 8 août 2024' );
+    checkResult( getTranslatedDate( date ), '15/08/2024' );
 
-    console.log( 'Testing : getFormattedTimeText' );
+    console.log( 'Testing : getTranslatedTime' );
 
-    let time = new Date( '2024-08-08T14:30:00Z' );
+    let time = new Date( '2024-08-15T14:30:00Z' );
 
     setLanguageCode( 'en' );
-    checkResult( getFormattedTimeText( time, 'short', 'GMT' ), '2:30 PM' );
-    checkResult( getFormattedTimeText( time, 'short', 'UTC' ), '2:30 PM' );
-    checkResult( getFormattedTimeText( time, 'medium', 'GMT' ), '2:30:00 PM' );
-    checkResult( getFormattedTimeText( time, 'medium', 'UTC' ), '2:30:00 PM' );
-    checkResult( getFormattedTimeText( time, 'long', 'GMT' ), '2:30:00 PM UTC' );
-    checkResult( getFormattedTimeText( time, 'long', 'UTC' ), '2:30:00 PM UTC' );
-    checkResult( getFormattedTimeText( time, 'full', 'GMT' ), '2:30:00 PM Coordinated Universal Time' );
-    checkResult( getFormattedTimeText( time, 'full', 'UTC' ), '2:30:00 PM Coordinated Universal Time' );
-    checkResult( getFormattedTimeText( time, undefined, 'UTC', '2-digit', '2-digit', '2-digit' ), '02:30:00 PM' );
+    checkResult( getTranslatedTime( time ), '14:30:00' );
 
     setLanguageCode( 'fr' );
-    checkResult( getFormattedTimeText( time, 'short', 'GMT' ), '14:30' );
-    checkResult( getFormattedTimeText( time, 'short', 'UTC' ), '14:30' );
-    checkResult( getFormattedTimeText( time, 'medium', 'GMT' ), '14:30:00' );
-    checkResult( getFormattedTimeText( time, 'medium', 'UTC' ), '14:30:00' );
-    checkResult( getFormattedTimeText( time, 'long', 'GMT' ), '14:30:00 UTC' );
-    checkResult( getFormattedTimeText( time, 'long', 'UTC' ), '14:30:00 UTC' );
-    checkResult( getFormattedTimeText( time, 'full', 'GMT' ), '14:30:00 temps universel coordonné' );
-    checkResult( getFormattedTimeText( time, 'full', 'UTC' ), '14:30:00 temps universel coordonné' );
-    checkResult( getFormattedTimeText( time, undefined, 'GMT', '2-digit', '2-digit', '2-digit' ), '14:30:00' );
-    checkResult( getFormattedTimeText( time, undefined, 'UTC', '2-digit', '2-digit', '2-digit' ), '14:30:00' );
+    checkResult( getTranslatedTime( time ), '14:30:00' );
 
-    console.log( 'Testing : getFormattedCountryName' );
+    console.log( 'Testing : getTranslatedCountryName' );
 
     setLanguageCode( 'en' );
-    checkResult( getFormattedCountryName( 'US' ), 'United States' );
-    checkResult( getFormattedCountryName( 'FR' ), 'France' );
+    checkResult( getTranslatedCountryName( 'US' ), 'United States' );
+    checkResult( getTranslatedCountryName( 'FR' ), 'France' );
 
     setLanguageCode( 'fr' );
-    checkResult( getFormattedCountryName( 'US' ), 'États-Unis' );
-    checkResult( getFormattedCountryName( 'FR' ), 'France' );
+    checkResult( getTranslatedCountryName( 'US' ), 'États-Unis' );
+    checkResult( getTranslatedCountryName( 'FR' ), 'France' );
 
-    console.log( 'Testing : getFormattedLanguageName' );
+    console.log( 'Testing : getTranslatedLanguageName' );
 
     setLanguageCode( 'en' );
-    checkResult( getFormattedLanguageName( 'en' ), 'English' );
-    checkResult( getFormattedLanguageName( 'fr' ), 'French' );
+    checkResult( getTranslatedLanguageName( 'en' ), 'English' );
+    checkResult( getTranslatedLanguageName( 'fr' ), 'French' );
 
     setLanguageCode( 'fr' );
-    checkResult( getFormattedLanguageName( 'en' ), 'anglais' );
-    checkResult( getFormattedLanguageName( 'fr' ), 'français' );
+    checkResult( getTranslatedLanguageName( 'en' ), 'anglais' );
+    checkResult( getTranslatedLanguageName( 'fr' ), 'français' );
 
-    console.log( 'Testing : getFormattedCurrencyName' );
+    console.log( 'Testing : getTranslatedCurrencyName' );
 
     setLanguageCode( 'en' );
-    checkResult( getFormattedCurrencyName( 'USD' ), 'US Dollar' );
-    checkResult( getFormattedCurrencyName( 'EUR' ), 'Euro' );
+    checkResult( getTranslatedCurrencyName( 'USD' ), 'US Dollar' );
+    checkResult( getTranslatedCurrencyName( 'EUR' ), 'Euro' );
 
     setLanguageCode( 'fr' );
-    checkResult( getFormattedCurrencyName( 'USD' ), 'dollar des États-Unis' );
-    checkResult( getFormattedCurrencyName( 'EUR' ), 'euro' );
-
-    console.log( 'Testing : getFormattedArrayText' );
-
-    let array = [ 'apple', 'banana', 'cherry' ];
-
-    setLanguageCode( 'en' );
-    checkResult( getFormattedArrayText( array ), 'apple, banana, and cherry' );
-    checkResult( getFormattedArrayText( array, 'narrow' ), 'apple, banana, cherry' );
-    checkResult( getFormattedArrayText( array, 'long', 'disjunction' ), 'apple, banana, or cherry' );
-
-    setLanguageCode( 'fr' );
-    checkResult( getFormattedArrayText( array ), 'apple, banana et cherry' );
-    checkResult( getFormattedArrayText( array, 'narrow' ), 'apple, banana, cherry' );
-    checkResult( getFormattedArrayText( array, 'long', 'disjunction' ), 'apple, banana ou cherry' );
+    checkResult( getTranslatedCurrencyName( 'USD' ), 'dollar des États-Unis' );
+    checkResult( getTranslatedCurrencyName( 'EUR' ), 'euro' );
 
     console.log( 'Testing : getBrowserLanguageCode' );
 

@@ -1,14 +1,22 @@
+// -- IMPORTS
+
+import 'package:intl/intl.dart';
+import 'package:intl/date_symbol_data_local.dart';
+import 'package:intl/number_symbols_data.dart';
+
 // -- CONSTANTS
 
-const
-    valueExpression = /^(.*?)([<=>]+)(.*)$/;
+final RegExp
+    valueExpression = RegExp(r'^(.*?)([<=>]+)(.*)$');
 
 // -- VARIABLES
 
-export let
-    textBySlugMap = new Map(),
+Map<String, String>
+    textBySlugMap = {};
+String
     languageSeparator = '\n¨',
     languageTag = 'en',
+    languageSubTag = 'en',
     continentCode = '',
     countryCode = '',
     languageCode = 'en',
@@ -18,27 +26,27 @@ export let
 
 // -- FUNCTIONS
 
-export function setTextBySlug(
-    text,
-    textSlug
+void setTextBySlug(
+    String text,
+    String textSlug
     )
 {
-    textBySlugMap.set( textSlug, text );
+    textBySlugMap[textSlug] = text;
 }
 
 // ~~
 
-export function getTextBySlug(
-    textSlug
+String getTextBySlug(
+    String textSlug
     )
 {
-    if ( textBySlugMap.has( textSlug ) )
+    if ( textBySlugMap.containsKey( textSlug ) )
     {
-        return textBySlugMap.get( textSlug );
+        return textBySlugMap[textSlug]!;
     }
     else
     {
-        console.warn( 'Missing text slug : ' + textSlug );
+        print( 'Missing text slug : ' + textSlug );
 
         return '';
     }
@@ -46,8 +54,27 @@ export function getTextBySlug(
 
 // ~~
 
-export function getContinentCodeFromCountryCode(
-    countryCode
+String getLanguageDecimalSeparator(
+    String languageCode
+    )
+{
+    if ( languageCode == 'en'
+         || languageCode == 'ja'
+         || languageCode == 'ko'
+         || languageCode == 'zh' )
+    {
+        return '.';
+    }
+    else
+    {
+        return ',';
+    }
+}
+
+// ~~
+
+String getContinentCodeFromCountryCode(
+    String countryCode
     )
 {
     switch ( countryCode )
@@ -302,8 +329,8 @@ export function getContinentCodeFromCountryCode(
 
 // ~~
 
-export function getContinentSlugFromContinentCode(
-    continentCode
+String getContinentSlugFromContinentCode(
+    String continentCode
     )
 {
     switch ( continentCode )
@@ -323,8 +350,8 @@ export function getContinentSlugFromContinentCode(
 
 // ~~
 
-export function setLanguageSeparator(
-    languageSeparator_
+void setLanguageSeparator(
+    String languageSeparator_
     )
 {
     languageSeparator = languageSeparator_;
@@ -332,7 +359,7 @@ export function setLanguageSeparator(
 
 // ~~
 
-export function getLanguageSeparator(
+String getLanguageSeparator(
     )
 {
     return languageSeparator;
@@ -340,8 +367,8 @@ export function getLanguageSeparator(
 
 // ~~
 
-export function setLanguageTag(
-    languageTag_
+void setLanguageTag(
+    String languageTag_
     )
 {
     languageTag = languageTag_;
@@ -349,7 +376,7 @@ export function setLanguageTag(
 
 // ~~
 
-export function getLanguageTag(
+String getLanguageTag(
     )
 {
     return languageTag;
@@ -357,16 +384,27 @@ export function getLanguageTag(
 
 // ~~
 
-export function updateLanguageTag(
+void updateLanguageTag(
     )
 {
     languageTag = getTrimmedLanguageTag( languageCode + '-' + countryCode + '-' + continentCode );
+
+    if ( countryCode.isEmpty )
+    {
+        languageSubTag = languageCode;
+    }
+    else
+    {
+        languageSubTag = languageCode + '-' + countryCode;
+    }
+
+    initializeDateFormatting( languageSubTag );
 }
 
 // ~~
 
-export function setContinentCode(
-    continentCode_
+void setContinentCode(
+    String continentCode_
     )
 {
     continentCode = continentCode_;
@@ -376,7 +414,7 @@ export function setContinentCode(
 
 // ~~
 
-export function getContinentCode(
+String getContinentCode(
     )
 {
     return continentCode;
@@ -384,8 +422,8 @@ export function getContinentCode(
 
 // ~~
 
-export function setCountryCode(
-    countryCode_
+void setCountryCode(
+    String countryCode_
     )
 {
     countryCode = countryCode_;
@@ -395,7 +433,7 @@ export function setCountryCode(
 
 // ~~
 
-export function getCountryCode(
+String getCountryCode(
     )
 {
     return countryCode;
@@ -403,8 +441,8 @@ export function getCountryCode(
 
 // ~~
 
-export function setLanguageCode(
-    languageCode_
+void setLanguageCode(
+    String languageCode_
     )
 {
     languageCode = languageCode_;
@@ -414,7 +452,7 @@ export function setLanguageCode(
 
 // ~~
 
-export function getLanguageCode(
+String getLanguageCode(
     )
 {
     return languageCode;
@@ -422,8 +460,8 @@ export function getLanguageCode(
 
 // ~~
 
-export function setDefaultLanguageCode(
-    defaultLanguageCode_
+void setDefaultLanguageCode(
+    String defaultLanguageCode_
     )
 {
     defaultLanguageCode = defaultLanguageCode_;
@@ -431,7 +469,7 @@ export function setDefaultLanguageCode(
 
 // ~~
 
-export function getDefaultLanguageCode(
+String getDefaultLanguageCode(
     )
 {
     return defaultLanguageCode;
@@ -439,8 +477,8 @@ export function getDefaultLanguageCode(
 
 // ~~
 
-export function setSubstitutionPrefix(
-    substitutionPrefix_
+void setSubstitutionPrefix(
+    String substitutionPrefix_
     )
 {
     substitutionPrefix = substitutionPrefix_;
@@ -448,7 +486,7 @@ export function setSubstitutionPrefix(
 
 // ~~
 
-export function getSubstitutionPrefix(
+String getSubstitutionPrefix(
     )
 {
     return substitutionPrefix;
@@ -456,8 +494,8 @@ export function getSubstitutionPrefix(
 
 // ~~
 
-export function setSubstitutionSuffix(
-    substitutionSuffix_
+void setSubstitutionSuffix(
+    String substitutionSuffix_
     )
 {
     substitutionSuffix = substitutionSuffix_;
@@ -465,7 +503,7 @@ export function setSubstitutionSuffix(
 
 // ~~
 
-export function getSubstitutionSuffix(
+String getSubstitutionSuffix(
     )
 {
     return substitutionSuffix;
@@ -473,185 +511,19 @@ export function getSubstitutionSuffix(
 
 // ~~
 
-export function getFormattedNumberText(
-    number,
-    style = undefined,
-    currency = undefined
+String getBrowserLanguageCode(
+    String browserLanguageText,
+    List<String> validLanguageCodeArray,
+    [String defaultLanguageCode = '']
     )
 {
-    let numberFormat;
+    List<String> browserLanguageArray = browserLanguageText.toLowerCase().split( ',' );
 
-    if ( style === 'currency' )
+    for ( String browserLanguage in browserLanguageArray )
     {
-        numberFormat
-            = new Intl.NumberFormat(
-                  languageTag,
-                  {
-                      style,
-                      currency
-                  }
-                  );
-    }
-    else
-    {
-        numberFormat
-            = new Intl.NumberFormat(
-                  languageTag,
-                  {
-                      style
-                  }
-                  );
-    }
+        String browserLanguageCode = browserLanguage.substring( 0, 2 );
 
-    return numberFormat.format( number );
-}
-
-// ~~
-
-export function getFormattedDateText(
-    date,
-    style = undefined,
-    timeZone = undefined,
-    yearFormat = undefined,
-    monthFormat = undefined,
-    dayFormat = undefined,
-    weekdayFormat = undefined
-    )
-{
-    let dateTimeFormat
-        = new Intl.DateTimeFormat(
-              languageTag,
-              {
-                  dateStyle : style,
-                  year: yearFormat,
-                  month: monthFormat,
-                  day: dayFormat,
-                  weekday: weekdayFormat,
-                  timeZone
-              }
-              );
-
-    return dateTimeFormat.format( date );
-}
-
-// ~~
-
-export function getFormattedTimeText(
-    time,
-    style = undefined,
-    timeZone = undefined,
-    hourFormat = undefined,
-    minuteFormat = undefined,
-    secondFormat = undefined
-    )
-{
-    let dateTimeFormat
-        = new Intl.DateTimeFormat(
-              languageTag,
-              {
-                  timeStyle : style,
-                  hour: hourFormat,
-                  minute: minuteFormat,
-                  second: secondFormat,
-                  timeZone
-              }
-              );
-
-    return dateTimeFormat.format( time );
-}
-
-// ~~
-
-export function getFormattedCountryName(
-    countryCode
-    )
-{
-    let displayNames
-        = new Intl.DisplayNames(
-              [
-                  languageTag
-              ],
-              {
-                  type: 'region'
-              }
-              );
-
-    return displayNames.of( countryCode );
-}
-
-// ~~
-
-export function getFormattedLanguageName(
-    languageCode
-    )
-{
-    let displayNames
-        = new Intl.DisplayNames(
-              [
-                  languageTag
-              ],
-              {
-                  type: 'language'
-              }
-              );
-
-    return displayNames.of( languageCode );
-}
-
-// ~~
-
-export function getFormattedCurrencyName(
-    currencyCode
-    )
-{
-    let displayNames
-        = new Intl.DisplayNames(
-              [
-                  languageTag
-              ],
-              {
-                  type: 'currency'
-              }
-              );
-
-    return displayNames.of( currencyCode );
-}
-
-// ~~
-
-export function getFormattedArrayText(
-    elementArray,
-    style = undefined,
-    type = undefined
-    )
-{
-    let listFormat
-        = new Intl.ListFormat(
-              languageTag,
-              {
-                  style,
-                  type
-              }
-              );
-
-    return listFormat.format( elementArray );
-}
-
-// ~~
-
-export function getBrowserLanguageCode(
-    browserLanguageText,
-    validLanguageCodeArray,
-    defaultLanguageCode = ''
-    )
-{
-    let browserLanguageArray = browserLanguageText.toLowerCase().split( ',' );
-
-    for ( let browserLanguage of browserLanguageArray )
-    {
-        let browserLanguageCode = browserLanguage.slice( 0, 2 );
-
-        if ( validLanguageCodeArray.indexOf( browserLanguageCode ) >= 0 )
+        if ( validLanguageCodeArray.contains( browserLanguageCode ) )
         {
             return browserLanguageCode;
         }
@@ -662,17 +534,17 @@ export function getBrowserLanguageCode(
 
 // ~~
 
-export function getTrimmedLanguageTag(
-    languageTag
+String getTrimmedLanguageTag(
+    String languageTag
     )
 {
     if ( languageTag.endsWith( '--' ) )
     {
-        return languageTag.slice( 0, -2 );
+        return languageTag.substring( 0, languageTag.length - 2 );
     }
     else if ( languageTag.endsWith( '-' ) )
     {
-        return languageTag.slice( 0, -1 );
+        return languageTag.substring( 0, languageTag.length - 1 );
     }
     else
     {
@@ -682,8 +554,8 @@ export function getTrimmedLanguageTag(
 
 // ~~
 
-export function getUntranslatedText(
-    multilingualText
+String getUntranslatedText(
+    String multilingualText
     )
 {
     return multilingualText.split( languageSeparator )[ 0 ];
@@ -691,26 +563,26 @@ export function getUntranslatedText(
 
 // ~~
 
-export function matchesLanguageSpecifier(
-    languageSpecifier,
-    languageTag
+bool matchesLanguageSpecifier(
+    String languageSpecifier,
+    String languageTag
     )
 {
-    let languageTagPartArray = ( languageTag + '--' ).split( '-' );
+    List<String> languageTagPartArray = ( languageTag + '--' ).split( '-' );
 
-    for ( let languageSpecifierTag of languageSpecifier.split( ',' ) )
+    for ( String languageSpecifierTag in languageSpecifier.split( ',' ) )
     {
-        let languageSpecifierTagPartArray = ( languageSpecifierTag + '--' ).split( '-' );
+        List<String> languageSpecifierTagPartArray = ( languageSpecifierTag + '--' ).split( '-' );
 
-        if ( ( languageTagPartArray[ 0 ] === ''
-               || languageSpecifierTagPartArray[ 0 ] === ''
-               || languageTagPartArray[ 0 ] === languageSpecifierTagPartArray[ 0 ] )
-             && ( languageTagPartArray[ 1 ] === ''
-                  || languageSpecifierTagPartArray[ 1 ] === ''
-                  || languageTagPartArray[ 1 ] === languageSpecifierTagPartArray[ 1 ] )
-             && ( languageTagPartArray[ 2 ] === ''
-                  || languageSpecifierTagPartArray[ 2 ] === ''
-                  || languageTagPartArray[ 2 ] === languageSpecifierTagPartArray[ 2 ] ) )
+        if ( ( languageTagPartArray[ 0 ] == ''
+               || languageSpecifierTagPartArray[ 0 ] == ''
+               || languageTagPartArray[ 0 ] == languageSpecifierTagPartArray[ 0 ] )
+             && ( languageTagPartArray[ 1 ] == ''
+                  || languageSpecifierTagPartArray[ 1 ] == ''
+                  || languageTagPartArray[ 1 ] == languageSpecifierTagPartArray[ 1 ] )
+             && ( languageTagPartArray[ 2 ] == ''
+                  || languageSpecifierTagPartArray[ 2 ] == ''
+                  || languageTagPartArray[ 2 ] == languageSpecifierTagPartArray[ 2 ] ) )
         {
             return true;
         }
@@ -721,43 +593,42 @@ export function matchesLanguageSpecifier(
 
 // ~~
 
-export function matchesValueSpecifier(
-    valueSpecifier,
-    valueByNameMap
+bool matchesValueSpecifier(
+    String valueSpecifier,
+    Map<String, dynamic>? valueByNameMap
     )
 {
-    if ( valueByNameMap !== undefined )
+    if ( valueByNameMap != null )
     {
-        let match = valueSpecifier.match( valueExpression );
+        var match = valueExpression.firstMatch( valueSpecifier );
 
-        if ( match )
+        if ( match != null )
         {
-            let valueName = match[ 1 ];
-            let operator = match[ 2 ];
-            let otherValue = match[ 3 ];
+            String valueName = match.group(1)!;
+            String operator = match.group(2)!;
+            dynamic otherValue = match.group(3)!;
 
-            if ( valueByNameMap !== undefined
-                 && valueName in valueByNameMap )
+            if ( valueByNameMap.containsKey( valueName ) )
             {
-                let value = valueByNameMap[ valueName ];
+                dynamic value = valueByNameMap[ valueName ];
 
-                if ( typeof value === 'number' )
+                if ( value is num )
                 {
-                    otherValue = Number( otherValue );
+                    otherValue = num.parse( otherValue );
                 }
 
-                if ( ( operator === '='
-                       && value === otherValue )
-                     || ( operator === '<'
+                if ( ( operator == '='
+                       && value == otherValue )
+                     || ( operator == '<'
                           && value < otherValue )
-                     || ( operator === '<='
+                     || ( operator == '<='
                           && value <= otherValue )
-                     || ( operator === '>='
+                     || ( operator == '>='
                           && value >= otherValue )
-                     || ( operator === '>'
+                     || ( operator == '>'
                           && value > otherValue )
-                     || ( operator === '<>'
-                          && value !== otherValue ) )
+                     || ( operator == '<>'
+                          && value != otherValue ) )
                 {
                     return true;
                 }
@@ -769,19 +640,19 @@ export function matchesValueSpecifier(
         }
     }
 
-    console.warn( 'Bad value specifier : ' + valueSpecifier );
+    print( 'Bad value specifier : ' + valueSpecifier );
 
     return false;
 }
 
 // ~~
 
-export function matchesConditionSpecifier(
-    specifier,
-    valueByNameMap
+bool matchesConditionSpecifier(
+    String specifier,
+    Map<String, dynamic>? valueByNameMap
     )
 {
-    for ( let valueSpecifier of specifier.split( ',' ) )
+    for ( String valueSpecifier in specifier.split( ',' ) )
     {
         if ( matchesValueSpecifier( valueSpecifier, valueByNameMap ) )
         {
@@ -794,17 +665,17 @@ export function matchesConditionSpecifier(
 
 // ~~
 
-export function matchesTranslationSpecifier(
-    translationSpecifier,
-    valueByNameMap,
-    languageTag
+bool matchesTranslationSpecifier(
+    String translationSpecifier,
+    Map<String, dynamic>? valueByNameMap,
+    String languageTag
     )
 {
-    let conditionSpecifierArray = translationSpecifier.split( '?' );
+    List<String> conditionSpecifierArray = translationSpecifier.split( '?' );
 
     if ( matchesLanguageSpecifier( conditionSpecifierArray[ 0 ], languageTag ) )
     {
-        for ( let conditionSpecifierIndex = 1;
+        for ( int conditionSpecifierIndex = 1;
               conditionSpecifierIndex < conditionSpecifierArray.length;
               ++conditionSpecifierIndex )
         {
@@ -822,16 +693,16 @@ export function matchesTranslationSpecifier(
 
 // ~~
 
-export function getSubstitutedText(
-    text,
-    valueByNameMap
+String getSubstitutedText(
+    String text,
+    Map<String, dynamic>? valueByNameMap
     )
 {
-    if ( valueByNameMap !== undefined )
+    if ( valueByNameMap != null )
     {
-        for ( let [ name, value ] of Object.entries( valueByNameMap ) )
+        for ( var entry in valueByNameMap.entries )
         {
-            text = text.replaceAll( substitutionPrefix + name + substitutionSuffix, value );
+            text = text.replaceAll( substitutionPrefix + entry.key + substitutionSuffix, entry.value.toString() );
         }
     }
 
@@ -840,123 +711,191 @@ export function getSubstitutedText(
 
 // ~~
 
-export function getTranslatedText(
-    multilingualText,
-    valueByNameMap,
-    languageTag_,
-    defaultLanguageTag
+String getTranslatedText(
+    String multilingualText,
+    dynamic valueByNameMap,
+    [String? languageTag_,
+    String? defaultLanguageTag]
     )
 {
-    if ( languageTag_ !== undefined
-         && isString( valueByNameMap ) )
+    if ( languageTag_ != null
+         && valueByNameMap is String )
     {
         languageTag_ = valueByNameMap;
-        valueByNameMap = undefined;
+        valueByNameMap = null;
     }
 
-    let translatedTextArray = multilingualText.split( languageSeparator );
+    List<String> translatedTextArray = multilingualText.split( languageSeparator );
 
-    if ( languageTag_ === undefined )
+    if ( languageTag_ == null )
     {
         languageTag_ = languageTag;
     }
 
-    if ( languageTag_ !== defaultLanguageTag )
+    if ( languageTag_ != defaultLanguageTag )
     {
-        for ( let translatedTextIndex = translatedTextArray.length - 1;
+        for ( int translatedTextIndex = translatedTextArray.length - 1;
               translatedTextIndex >= 1;
               --translatedTextIndex )
         {
-            let translatedText = translatedTextArray[ translatedTextIndex ];
-            let colonCharacterIndex = translatedText.indexOf( ':' );
+            String translatedText = translatedTextArray[ translatedTextIndex ];
+            int colonCharacterIndex = translatedText.indexOf( ':' );
 
             if ( colonCharacterIndex >= 0 )
             {
-                if ( matchesTranslationSpecifier( translatedText.slice( 0, colonCharacterIndex ), valueByNameMap, languageTag_ ) )
+                if ( matchesTranslationSpecifier( translatedText.substring( 0, colonCharacterIndex ), valueByNameMap as Map<String, dynamic>?, languageTag_ ) )
                 {
-                    return getSubstitutedText( translatedText.slice( colonCharacterIndex + 1 ), valueByNameMap );
+                    return getSubstitutedText( translatedText.substring( colonCharacterIndex + 1 ), valueByNameMap as Map<String, dynamic>? );
                 }
             }
         }
     }
 
-    return getSubstitutedText( translatedTextArray[ 0 ], valueByNameMap );
+    return getSubstitutedText( translatedTextArray[ 0 ], valueByNameMap as Map<String, dynamic>? );
 }
 
 // ~~
 
-export function getTranslatedNumber(
-    number,
-    decimalSeparator
+String getTranslatedNumber(
+    num number,
+    {
+        String pattern = '',
+        int minimumIntegerDigitCount = 1,
+        int minimumFractionDigitCount = 0,
+        int maximumFractionDigitCount = 8,
+        bool usesGrouping = false,
+        String currency = '',
+        String symbol = ''
+    }
     )
 {
-    if ( decimalSeparator === ',' )
+    if ( pattern == '' )
     {
-        return number.toString().replace( '.', ',' );
-    }
-    else
-    {
-        return number.toString();
-    }
-}
-
-// ~~
-
-export function getLanguageDecimalSeparator(
-    languageCode
-    )
-{
-    if ( languageCode === 'en'
-         || languageCode === 'ja'
-         || languageCode === 'ko'
-         || languageCode === 'zh' )
-    {
-        return '.';
-    }
-    else
-    {
-        return ',';
-    }
-}
-
-// ~~
-
-export function isMultilingualText(
-    multilingualText
-    )
-{
-    return multilingualText.indexOf( languageSeparator ) >= 0;
-}
-
-// ~~
-
-export function getTranslationArray(
-    multilingualText
-    )
-{
-    let translatedTextArray = multilingualText.split( languageSeparator );
-    let translationArray = [];
-
-    translationArray.push(
+        for ( var minimumIntegerDigitCountIndex = 0;
+              minimumIntegerDigitCountIndex < minimumIntegerDigitCount;
+              ++minimumIntegerDigitCountIndex )
         {
-            specifier : '',
-            data : translatedTextArray[ 0 ]
+            pattern += '0';
+        }
+        
+        if ( minimumFractionDigitCount > 0 )
+        {
+            pattern += '.' + '0' * minimumFractionDigitCount;
+        }
+            
+        if ( maximumFractionDigitCount > minimumFractionDigitCount )
+        {
+            if ( minimumFractionDigitCount == 0 )
+            {
+                pattern += '.';
+            }
+
+            pattern += '#' * ( maximumFractionDigitCount - minimumFractionDigitCount );
+        }
+        
+        if ( usesGrouping ) 
+        {
+            pattern = '#,##' + pattern;
+        }
+    }
+
+    if ( currency.isNotEmpty )
+    {
+        var numberFormat = 
+            NumberFormat.currency(
+                locale: languageSubTag,
+                name: currency,
+                customPattern: pattern
+                );
+
+        return numberFormat.format( number );
+    }
+    else if ( symbol.isNotEmpty )
+    {
+        var numberFormat = 
+            NumberFormat.currency(
+                locale: languageSubTag,
+                symbol: symbol,
+                customPattern: pattern
+                );
+
+        return numberFormat.format( number );
+    }
+    else
+    {
+        var numberFormat = 
+            NumberFormat( 
+                pattern,
+                languageSubTag
+                );
+
+        return numberFormat.format( number );
+    }
+}
+
+// ~~
+
+String getTranslatedDate(
+    DateTime date,
+    {
+        String pattern = 'yyyy-MM-dd'
+    }
+    )
+{
+    return DateFormat( pattern, languageSubTag ).format( date );
+}
+
+// ~~
+
+String getTranslatedTime(
+    DateTime time,
+    {
+        String pattern = 'HH:mm:ss'
+    }
+    )
+{
+    return DateFormat( pattern, languageSubTag ).format( time );
+}
+
+
+// ~~
+
+bool isMultilingualText(
+    String multilingualText
+    )
+{
+    return multilingualText.contains( languageSeparator );
+}
+
+// ~~
+
+List<Map<String, String>> getTranslationArray(
+    String multilingualText
+    )
+{
+    List<String> translatedTextArray = multilingualText.split( languageSeparator );
+    List<Map<String, String>> translationArray = [];
+
+    translationArray.add(
+        {
+            'specifier' : '',
+            'data' : translatedTextArray[ 0 ]
         }
         );
 
-    for ( let translatedTextIndex = 1;
+    for ( int translatedTextIndex = 1;
           translatedTextIndex < translatedTextArray.length;
           ++translatedTextIndex )
     {
-        let translatedText = translatedTextArray[ translatedTextIndex ];
-        let colonCharacterIndex = translatedText.indexOf( ':' );
+        String translatedText = translatedTextArray[ translatedTextIndex ];
+        int colonCharacterIndex = translatedText.indexOf( ':' );
 
         if ( colonCharacterIndex >= 0 )
         {
-            translationArray.push(
+            translationArray.add(
                 {
-                    specifier : translatedText.slice( 0, colonCharacterIndex ),
-                    data : translatedText.slice( colonCharacterIndex + 1 )
+                    'specifier' : translatedText.substring( 0, colonCharacterIndex ),
+                    'data' : translatedText.substring( colonCharacterIndex + 1 )
                 }
                 );
         }
@@ -967,24 +906,20 @@ export function getTranslationArray(
 
 // ~~
 
-export function getNextLanguageTag(
-    languageTagArray,
-    translationArray
+String getNextLanguageTag(
+    List<String> languageTagArray,
+    List<Map<String, String>> translationArray
     )
 {
-    for ( let languageTagIndex = 1;
+    for ( int languageTagIndex = 1;
           languageTagIndex < languageTagArray.length;
           ++languageTagIndex )
     {
-        let languageTag = languageTagArray[ languageTagIndex ];
+        String languageTag = languageTagArray[ languageTagIndex ];
 
-        for ( let translationIndex = 0;
-              translationIndex < translationArray.length;
-              ++translationIndex )
+        for ( var translation in translationArray )
         {
-            let translation = translationArray[ translationIndex ];
-
-            if ( translation.specifier.indexOf( languageTag ) >= 0 )
+            if ( translation['specifier']!.contains( languageTag ) )
             {
                 languageTag = '';
 
@@ -992,7 +927,7 @@ export function getNextLanguageTag(
             }
         }
 
-        if ( languageTag !== '' )
+        if ( languageTag != '' )
         {
             return languageTag;
         }
@@ -1003,23 +938,23 @@ export function getNextLanguageTag(
 
 // ~~
 
-export function getMultilingualText(
-    translationArray
+String getMultilingualText(
+    List<Map<String, String>> translationArray
     )
 {
-    let multilingualText = '';
+    String multilingualText = '';
 
-    if ( translationArray.length > 0 )
+    if ( translationArray.isNotEmpty )
     {
-        multilingualText = translationArray[ 0 ].data;
+        multilingualText = translationArray[ 0 ]['data']!;
 
-        for ( let translationIndex = 1;
+        for ( int translationIndex = 1;
               translationIndex < translationArray.length;
               ++translationIndex )
         {
-            let translation = translationArray[ translationIndex ];
+            var translation = translationArray[ translationIndex ];
 
-            multilingualText += languageSeparator + translation.specifier + ':' + translation.data;
+            multilingualText += languageSeparator + translation['specifier']! + ':' + translation['data']!;
         }
     }
 
@@ -1028,16 +963,18 @@ export function getMultilingualText(
 
 // ~~
 
-export function getLocalizedText(
-    text,
-    valueByNameMap,
-    languageTag,
-    defaultLanguageTag
+String getLocalizedText(
+    String text,
+    [
+        Map<String, dynamic>? valueByNameMap,
+        String? languageTag_,
+        String? defaultLanguageTag
+    ]
     )
 {
     if ( isMultilingualText( text ) )
     {
-        return getTranslatedText( text, valueByNameMap, languageTag, defaultLanguageTag );
+        return getTranslatedText( text, valueByNameMap, languageTag_, defaultLanguageTag );
     }
     else
     {
@@ -1047,20 +984,22 @@ export function getLocalizedText(
 
 // ~~
 
-export function getLocalizedTextBySlug(
-    textSlug,
-    valueByNameMap,
-    languageTag,
-    defaultLanguageTag
+String getLocalizedTextBySlug(
+    String textSlug,
+    Map<String, dynamic>? valueByNameMap,
+    [
+        String? languageTag,
+        String? defaultLanguageTag
+    ]
     )
 {
-    if ( textBySlugMap.has( textSlug ) )
+    if ( textBySlugMap.containsKey( textSlug ) )
     {
-        return getLocalizedText( textBySlugMap.get( textSlug ), valueByNameMap, languageTag, defaultLanguageTag );
+        return getLocalizedText( textBySlugMap[ textSlug ]!, valueByNameMap, languageTag, defaultLanguageTag );
     }
     else
     {
-        console.warn( 'Missing text slug : ' + textSlug );
+        print( 'Missing text slug : ' + textSlug );
 
         return textSlug;
     }
