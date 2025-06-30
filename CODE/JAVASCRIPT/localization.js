@@ -508,8 +508,8 @@ export function getTranslatedNumber(
         unit = '',
         currency = '',
         minimumIntegerDigitCount = 1,
-        minimumDecimalDigitCount = 0,
-        maximumDecimalDigitCount = undefined,
+        minimumFractionalDigitCount = 0,
+        maximumFractionalDigitCount = undefined,
         usesGrouping = false
     } = {}
     )
@@ -524,8 +524,8 @@ export function getTranslatedNumber(
                 {
                     style: 'unit',
                     unit: unit,
-                    minimumFractionDigits: minimumDecimalDigitCount,
-                    maximumFractionDigits: maximumDecimalDigitCount,
+                    minimumFractionDigits: minimumFractionalDigitCount,
+                    maximumFractionDigits: maximumFractionalDigitCount,
                     useGrouping: usesGrouping
                 }
                 );
@@ -538,8 +538,8 @@ export function getTranslatedNumber(
                 {
                     style: 'currency',
                     currency: currency,
-                    minimumFractionDigits: minimumDecimalDigitCount,
-                    maximumFractionDigits: maximumDecimalDigitCount,
+                    minimumFractionDigits: minimumFractionalDigitCount,
+                    maximumFractionDigits: maximumFractionalDigitCount,
                     useGrouping: usesGrouping
                 }
                 );
@@ -551,8 +551,8 @@ export function getTranslatedNumber(
                 languageSubtag,
                 {
                     minimumIntegerDigits: minimumIntegerDigitCount,
-                    minimumFractionDigits: minimumDecimalDigitCount,
-                    maximumFractionDigits: maximumDecimalDigitCount,
+                    minimumFractionDigits: minimumFractionalDigitCount,
+                    maximumFractionDigits: maximumFractionalDigitCount,
                     useGrouping: usesGrouping
                 }
                 );

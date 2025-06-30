@@ -30,16 +30,16 @@ void runTests(
     setLanguageCode( 'en' );
     checkResult( getTranslatedNumber( 1234567.89 ), '1234567.89' );
     checkResult( getTranslatedNumber( 1234567.89, usesGrouping: true ), '1,234,567.89' );
-    checkResult( getTranslatedNumber( 1234567.89, minimumDecimalDigitCount: 2 ), '1234567.89' );
-    checkResult( getTranslatedNumber( 1234567.89, minimumDecimalDigitCount: 2, usesGrouping: true ), '1,234,567.89' );
-    //checkResult( getTranslatedNumber( 1234567.89, minimumDecimalDigitCount: 2, usesGrouping: true, maximumDecimalDigitCount: 4 ), '1,234,567.8900' );
+    checkResult( getTranslatedNumber( 1234567.89, minimumFractionalDigitCount: 2 ), '1234567.89' );
+    checkResult( getTranslatedNumber( 1234567.89, minimumFractionalDigitCount: 2, usesGrouping: true ), '1,234,567.89' );
+    //checkResult( getTranslatedNumber( 1234567.89, minimumFractionalDigitCount: 2, usesGrouping: true, maximumFractionalDigitCount: 4 ), '1,234,567.8900' );
 
     setLanguageCode( 'fr' );
     checkResult( getTranslatedNumber( 1234567.89 ), '1234567,89' );
     checkResult( getTranslatedNumber( 1234567.89, usesGrouping: true ), '1 234 567,89' );
-    checkResult( getTranslatedNumber( 1234567.89, minimumDecimalDigitCount: 2 ), '1234567,89' );
-    checkResult( getTranslatedNumber( 1234567.89, minimumDecimalDigitCount: 2, usesGrouping: true ), '1 234 567,89' );
-    //checkResult( getTranslatedNumber( 1234567.89, minimumDecimalDigitCount: 2, usesGrouping: true, maximumDecimalDigitCount: 4 ), '1 234 567,8900' );
+    checkResult( getTranslatedNumber( 1234567.89, minimumFractionalDigitCount: 2 ), '1234567,89' );
+    checkResult( getTranslatedNumber( 1234567.89, minimumFractionalDigitCount: 2, usesGrouping: true ), '1 234 567,89' );
+    //checkResult( getTranslatedNumber( 1234567.89, minimumFractionalDigitCount: 2, usesGrouping: true, maximumFractionalDigitCount: 4 ), '1 234 567,8900' );
 
     print( 'Testing : getTranslatedDate' );
 

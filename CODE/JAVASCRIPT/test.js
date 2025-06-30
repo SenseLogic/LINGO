@@ -49,29 +49,47 @@ function runTests(
     setLanguageCode( 'en' );
     checkResult( getTranslatedNumber( 12 ), '12' );
     checkResult( getTranslatedNumber( 12, { minimumIntegerDigitCount: 3 } ), '012' );
-    checkResult( getTranslatedNumber( 12, { minimumDecimalDigitCount: 3 } ), '12.000' );
+    checkResult( getTranslatedNumber( 12, { minimumFractionalDigitCount: 3 } ), '12.000' );
     checkResult( getTranslatedNumber( 12.89 ), '12.89' );
-    checkResult( getTranslatedNumber( 12.89, { minimumDecimalDigitCount: 3 } ), '12.890' );
-    checkResult( getTranslatedNumber( 12.89, { maximumDecimalDigitCount: 0 } ), '13' );
+    checkResult( getTranslatedNumber( 12.89, { minimumFractionalDigitCount: 3 } ), '12.890' );
+    checkResult( getTranslatedNumber( 12.89, { maximumFractionalDigitCount: 0 } ), '13' );
     checkResult( getTranslatedNumber( 1234567.89 ), '1234567.89' );
     checkResult( getTranslatedNumber( 1234567.89, { usesGrouping: true } ), '1,234,567.89' );
-    checkResult( getTranslatedNumber( 1234567.89, { minimumDecimalDigitCount: 3 } ), '1234567.890' );
-    checkResult( getTranslatedNumber( 1234567.89, { minimumDecimalDigitCount: 3, usesGrouping: true } ), '1,234,567.890' );
+    checkResult( getTranslatedNumber( 1234567.89, { minimumFractionalDigitCount: 3 } ), '1234567.890' );
+    checkResult( getTranslatedNumber( 1234567.89, { minimumFractionalDigitCount: 3, usesGrouping: true } ), '1,234,567.890' );
     checkResult( getTranslatedNumber( 1234567.89, { currency: 'USD' } ), '$1234567.89' );
     checkResult( getTranslatedNumber( 1234567.89, { currency: 'USD', usesGrouping: true } ), '$1,234,567.89' );
-    checkResult( getTranslatedNumber( 1234567.89, { currency: 'USD', usesGrouping: true, minimumDecimalDigitCount: 3 } ), '$1,234,567.890' );
+    checkResult( getTranslatedNumber( 1234567.89, { currency: 'USD', usesGrouping: true, minimumFractionalDigitCount: 3 } ), '$1,234,567.890' );
 
     setLanguageCode( 'fr' );
+    checkResult( getTranslatedNumber( 12 ), '12' );
+    checkResult( getTranslatedNumber( 12, { minimumIntegerDigitCount: 3 } ), '012' );
+    checkResult( getTranslatedNumber( 12, { minimumFractionalDigitCount: 3 } ), '12,000' );
+    checkResult( getTranslatedNumber( 12.89 ), '12,89' );
+    checkResult( getTranslatedNumber( 12.89, { minimumFractionalDigitCount: 3 } ), '12,890' );
+    checkResult( getTranslatedNumber( 12.89, { maximumFractionalDigitCount: 0 } ), '13' );
     checkResult( getTranslatedNumber( 1234567.89 ), '1234567,89' );
     checkResult( getTranslatedNumber( 1234567.89, { usesGrouping: true } ), '1 234 567,89' );
+    checkResult( getTranslatedNumber( 1234567.89, { minimumFractionalDigitCount: 3 } ), '1234567,890' );
+    checkResult( getTranslatedNumber( 1234567.89, { minimumFractionalDigitCount: 3, usesGrouping: true } ), '1 234 567,890' );
     checkResult( getTranslatedNumber( 1234567.89, { currency: 'EUR' } ), '1234567,89 €' );
     checkResult( getTranslatedNumber( 1234567.89, { currency: 'EUR', usesGrouping: true } ), '1 234 567,89 €' );
+    checkResult( getTranslatedNumber( 1234567.89, { currency: 'EUR', usesGrouping: true, minimumFractionalDigitCount: 3 } ), '1 234 567,890 €' );
 
     setLanguageCode( 'pt' );
+    checkResult( getTranslatedNumber( 12 ), '12' );
+    checkResult( getTranslatedNumber( 12, { minimumIntegerDigitCount: 3 } ), '012' );
+    checkResult( getTranslatedNumber( 12, { minimumFractionalDigitCount: 3 } ), '12,000' );
+    checkResult( getTranslatedNumber( 12.89 ), '12,89' );
+    checkResult( getTranslatedNumber( 12.89, { minimumFractionalDigitCount: 3 } ), '12,890' );
+    checkResult( getTranslatedNumber( 12.89, { maximumFractionalDigitCount: 0 } ), '13' );
     checkResult( getTranslatedNumber( 1234567.89 ), '1234567,89' );
     checkResult( getTranslatedNumber( 1234567.89, { usesGrouping: true } ), '1.234.567,89' );
+    checkResult( getTranslatedNumber( 1234567.89, { minimumFractionalDigitCount: 3 } ), '1234567,890' );
+    checkResult( getTranslatedNumber( 1234567.89, { minimumFractionalDigitCount: 3, usesGrouping: true } ), '1.234.567,890' );
     checkResult( getTranslatedNumber( 1234567.89, { currency: 'BRL' } ), 'R\$ 1234567,89' );
     checkResult( getTranslatedNumber( 1234567.89, { currency: 'BRL', usesGrouping: true } ), 'R\$ 1.234.567,89' );
+    checkResult( getTranslatedNumber( 1234567.89, { currency: 'BRL', usesGrouping: true, minimumFractionalDigitCount: 3 } ), 'R\$ 1.234.567,890' );
 
     console.log( 'Testing : getTranslatedDate' );
 

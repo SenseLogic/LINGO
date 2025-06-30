@@ -761,8 +761,8 @@ String getTranslatedNumber(
     {
         String pattern = '',
         int minimumIntegerDigitCount = 1,
-        int minimumDecimalDigitCount = 0,
-        int maximumDecimalDigitCount = 8,
+        int minimumFractionalDigitCount = 0,
+        int maximumFractionalDigitCount = 8,
         bool usesGrouping = false
     }
     )
@@ -776,19 +776,19 @@ String getTranslatedNumber(
             pattern += '0';
         }
 
-        if ( minimumDecimalDigitCount > 0 )
+        if ( minimumFractionalDigitCount > 0 )
         {
-            pattern += '.' + '0' * minimumDecimalDigitCount;
+            pattern += '.' + '0' * minimumFractionalDigitCount;
         }
 
-        if ( maximumDecimalDigitCount > minimumDecimalDigitCount )
+        if ( maximumFractionalDigitCount > minimumFractionalDigitCount )
         {
-            if ( minimumDecimalDigitCount == 0 )
+            if ( minimumFractionalDigitCount == 0 )
             {
                 pattern += '.';
             }
 
-            pattern += '#' * ( maximumDecimalDigitCount - minimumDecimalDigitCount );
+            pattern += '#' * ( maximumFractionalDigitCount - minimumFractionalDigitCount );
         }
 
         if ( usesGrouping )
