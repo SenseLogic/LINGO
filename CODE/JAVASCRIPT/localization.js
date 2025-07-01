@@ -377,19 +377,25 @@ export function getLanguageTag(
 
 // ~~
 
+export function getLanguageSubtag(
+    )
+{
+    if ( countryCode === '' )
+    {
+        return languageCode;
+    }
+    else
+    {
+        return languageCode + '-' + countryCode;
+    }
+}
+
+// ~~
+
 export function updateLanguageTag(
     )
 {
     languageTag = getTrimmedLanguageTag( languageCode + '-' + countryCode + '-' + continentCode );
-
-    if ( countryCode === '' )
-    {
-        languageSubtag = languageCode;
-    }
-    else
-    {
-        languageSubtag = languageCode + '-' + countryCode;
-    }
 }
 
 // ~~
@@ -507,10 +513,10 @@ export function getTranslatedNumber(
     {
         unit = '',
         currency = '',
+        usesGrouping = false,
         minimumIntegerDigitCount = 1,
         minimumFractionalDigitCount = 0,
-        maximumFractionalDigitCount = undefined,
-        usesGrouping = false
+        maximumFractionalDigitCount = undefined
     } = {}
     )
 {
@@ -520,7 +526,7 @@ export function getTranslatedNumber(
     {
         numberFormat =
             new Intl.NumberFormat(
-                languageSubtag,
+                getLanguageSubtag(),
                 {
                     style: 'unit',
                     unit: unit,
@@ -534,7 +540,7 @@ export function getTranslatedNumber(
     {
         numberFormat =
             new Intl.NumberFormat(
-                languageSubtag,
+                getLanguageSubtag(),
                 {
                     style: 'currency',
                     currency: currency,
@@ -548,7 +554,7 @@ export function getTranslatedNumber(
     {
         numberFormat =
             new Intl.NumberFormat(
-                languageSubtag,
+                getLanguageSubtag(),
                 {
                     minimumIntegerDigits: minimumIntegerDigitCount,
                     minimumFractionDigits: minimumFractionalDigitCount,
@@ -566,7 +572,9 @@ export function getTranslatedNumber(
 export function getTranslatedDate(
     date,
     {
-        pattern = 'yyyy-MM-dd',
+        dayPattern = 'd',
+        monthPattern = 'M',
+        yearPattern = 'y',
         timeZone = 'UTC'
     } = {}
     )
@@ -576,34 +584,34 @@ export function getTranslatedDate(
             timeZone: timeZone
         };
 
-    if ( pattern.includes( 'yyyy' ) )
+    if ( yearPattern === 'y' )
     {
         options.year = 'numeric';
     }
-    else if ( pattern.includes( 'yy' ) )
+    else if ( yearPattern === 'yy' )
     {
         options.year = '2-digit';
     }
 
-    if ( pattern.includes( 'MM' ) )
-    {
-        options.month = '2-digit';
-    }
-    else if ( pattern.includes( 'M' ) )
+    if ( monthPattern === 'M' )
     {
         options.month = 'numeric';
     }
-
-    if ( pattern.includes( 'dd' ) )
+    else if ( monthPattern === 'MM' )
     {
-        options.day = '2-digit';
+        options.month = '2-digit';
     }
-    else if ( pattern.includes( 'd' ) )
+
+    if ( dayPattern === 'd' )
     {
         options.day = 'numeric';
     }
+    else if ( dayPattern === 'dd' )
+    {
+        options.day = '2-digit';
+    }
 
-    let dateTimeFormat = new Intl.DateTimeFormat( languageSubtag, options );
+    let dateTimeFormat = new Intl.DateTimeFormat( getLanguageSubtag(), options );
 
     return dateTimeFormat.format( date );
 }
@@ -613,7 +621,9 @@ export function getTranslatedDate(
 export function getTranslatedTime(
     time,
     {
-        pattern = 'HH:mm:ss',
+        hourPattern = 'HH',
+        minutePattern = 'mm',
+        secondPattern = 'ss',
         timeZone = 'UTC'
     } = {}
     )
@@ -623,46 +633,46 @@ export function getTranslatedTime(
             timeZone: timeZone
         };
 
-    if ( pattern.includes( 'HH' ) )
+    if ( hourPattern === 'HH' )
     {
         options.hour = '2-digit';
         options.hour12 = false;
     }
-    else if ( pattern.includes( 'H' ) )
+    else if ( hourPattern === 'H' )
     {
         options.hour = 'numeric';
         options.hour12 = false;
     }
-    else if ( pattern.includes( 'hh' ) )
+    else if ( hourPattern === 'hh' )
     {
         options.hour = '2-digit';
         options.hour12 = true;
     }
-    else if ( pattern.includes( 'h' ) )
+    else if ( hourPattern === 'h' )
     {
         options.hour = 'numeric';
         options.hour12 = true;
     }
 
-    if ( pattern.includes( 'mm' ) )
+    if ( minutePattern === 'mm' )
     {
         options.minute = '2-digit';
     }
-    else if ( pattern.includes( 'm' ) )
+    else if ( minutePattern === 'm' )
     {
         options.minute = 'numeric';
     }
 
-    if ( pattern.includes( 'ss' ) )
+    if ( secondPattern === 'ss' )
     {
         options.second = '2-digit';
     }
-    else if ( pattern.includes( 's' ) )
+    else if ( secondPattern === 's' )
     {
         options.second = 'numeric';
     }
 
-    let dateTimeFormat = new Intl.DateTimeFormat( languageSubtag, options );
+    let dateTimeFormat = new Intl.DateTimeFormat( getLanguageSubtag(), options );
 
     return dateTimeFormat.format( time );
 }

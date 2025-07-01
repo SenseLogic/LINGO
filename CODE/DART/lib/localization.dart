@@ -384,19 +384,25 @@ String getLanguageTag(
 
 // ~~
 
+String getLanguageSubtag(
+    )
+{
+    if ( countryCode.isEmpty )
+    {
+        return languageCode;
+    }
+    else
+    {
+        return languageCode + '_' + countryCode;
+    }
+}
+
+// ~~
+
 void updateLanguageTag(
     )
 {
     languageTag = getTrimmedLanguageTag( languageCode + '-' + countryCode + '-' + continentCode );
-
-    if ( countryCode.isEmpty )
-    {
-        languageSubTag = languageCode;
-    }
-    else
-    {
-        languageSubTag = languageCode + '-' + countryCode;
-    }
 
     initializeDateFormatting( languageSubTag );
 }
@@ -759,11 +765,14 @@ String getTranslatedText(
 String getTranslatedNumber(
     num number,
     {
+        String unit = '',
+        String currency = '',
+        String symbol = '',
         String pattern = '',
+        bool usesGrouping = false,
         int minimumIntegerDigitCount = 1,
         int minimumFractionalDigitCount = 0,
-        int maximumFractionalDigitCount = 8,
-        bool usesGrouping = false
+        int maximumFractionalDigitCount = 8
     }
     )
 {
@@ -797,13 +806,27 @@ String getTranslatedNumber(
         }
     }
 
-    var numberFormat =
-        NumberFormat(
+    if ( unit.isNotEmpty )
+    {
+        return NumberFormat(
             pattern,
-            languageSubTag
-            );
-
-    return numberFormat.format( number );
+            getLanguageSubtag()
+            ).format( number );
+    }
+    else if ( currency.isNotEmpty || symbol.isNotEmpty )
+    {
+        return NumberFormat(
+            pattern,
+            getLanguageSubtag()
+            ).format( number );
+    }
+    else
+    {
+        return NumberFormat(
+            pattern,
+            getLanguageSubtag()
+            ).format( number );
+    }
 }
 
 // ~~
@@ -811,11 +834,32 @@ String getTranslatedNumber(
 String getTranslatedDate(
     DateTime date,
     {
-        String pattern = 'yyyy-MM-dd'
+        String pattern = '',
+        String dayPattern = 'd',
+        String monthPattern = 'M',
+        String yearPattern = 'y',
+        String separator = '',
+        String timeZone = 'UTC'
     }
     )
 {
-    return DateFormat( pattern, languageSubTag ).format( date );
+    if ( pattern.isNotEmpty )
+    {
+        return DateFormat( pattern, getLanguageSubtag() ).format( date );
+    }
+    else
+    {
+        pattern = yearPattern + separator + monthPattern + separator + dayPattern;
+
+        if ( pattern == 'yMd' )
+        {
+            return DateFormat.yMd( getLanguageSubtag() ).format( date );
+        }
+        else
+        {
+            return DateFormat( pattern, getLanguageSubtag() ).format( date );
+        }
+    }
 }
 
 // ~~
@@ -823,13 +867,33 @@ String getTranslatedDate(
 String getTranslatedTime(
     DateTime time,
     {
-        String pattern = 'HH:mm:ss'
+        String pattern = '',
+        String hourPattern = 'HH',
+        String minutePattern = 'mm',
+        String secondPattern = 'ss',
+        String separator = ':',
+        String timeZone = 'UTC'
     }
     )
 {
-    return DateFormat( pattern, languageSubTag ).format( time );
-}
+    if ( pattern.isNotEmpty )
+    {
+        return DateFormat( pattern, getLanguageSubtag() ).format( time );
+    }
+    else
+    {
+        pattern = hourPattern + separator + minutePattern + separator + secondPattern;
 
+        if ( pattern == 'HH:mm:ss' )
+        {
+            return DateFormat.Hms( getLanguageSubtag() ).format( time );
+        }
+        else
+        {
+            return DateFormat( pattern, getLanguageSubtag() ).format( time );
+        }
+    }
+}
 
 // ~~
 

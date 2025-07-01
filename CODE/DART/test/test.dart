@@ -28,42 +28,85 @@ void runTests(
     print( 'Testing : getTranslatedNumber' );
 
     setLanguageCode( 'en' );
+    checkResult( getTranslatedNumber( 12 ), '12' );
+    checkResult( getTranslatedNumber( 12, minimumIntegerDigitCount: 3 ), '012' );
+    checkResult( getTranslatedNumber( 12, minimumFractionalDigitCount: 3 ), '12.000' );
+    checkResult( getTranslatedNumber( 12.89 ), '12.89' );
+    checkResult( getTranslatedNumber( 12.89, minimumFractionalDigitCount: 3 ), '12.890' );
+    checkResult( getTranslatedNumber( 12.89, maximumFractionalDigitCount: 0 ), '13' );
     checkResult( getTranslatedNumber( 1234567.89 ), '1234567.89' );
     checkResult( getTranslatedNumber( 1234567.89, usesGrouping: true ), '1,234,567.89' );
-    checkResult( getTranslatedNumber( 1234567.89, minimumFractionalDigitCount: 2 ), '1234567.89' );
-    checkResult( getTranslatedNumber( 1234567.89, minimumFractionalDigitCount: 2, usesGrouping: true ), '1,234,567.89' );
-    //checkResult( getTranslatedNumber( 1234567.89, minimumFractionalDigitCount: 2, usesGrouping: true, maximumFractionalDigitCount: 4 ), '1,234,567.8900' );
+    checkResult( getTranslatedNumber( 1234567.89, minimumFractionalDigitCount: 3 ), '1234567.890' );
+    checkResult( getTranslatedNumber( 1234567.89, usesGrouping: true, minimumFractionalDigitCount: 3 ), '1,234,567.890' );
+    //checkResult( getTranslatedNumber( 1234567.89, currency: 'USD' ), '$1234567.89' );
+    //checkResult( getTranslatedNumber( 1234567.89, currency: 'USD', usesGrouping: true ), '$1,234,567.89' );
+    //checkResult( getTranslatedNumber( 1234567.89, currency: 'USD', usesGrouping: true, minimumFractionalDigitCount: 3 ), '$1,234,567.890' );
 
     setLanguageCode( 'fr' );
+    checkResult( getTranslatedNumber( 12 ), '12' );
+    checkResult( getTranslatedNumber( 12, minimumIntegerDigitCount: 3 ), '012' );
+    checkResult( getTranslatedNumber( 12, minimumFractionalDigitCount: 3 ), '12,000' );
+    checkResult( getTranslatedNumber( 12.89 ), '12,89' );
+    checkResult( getTranslatedNumber( 12.89, minimumFractionalDigitCount: 3 ), '12,890' );
+    checkResult( getTranslatedNumber( 12.89, maximumFractionalDigitCount: 0 ), '13' );
     checkResult( getTranslatedNumber( 1234567.89 ), '1234567,89' );
     checkResult( getTranslatedNumber( 1234567.89, usesGrouping: true ), '1 234 567,89' );
-    checkResult( getTranslatedNumber( 1234567.89, minimumFractionalDigitCount: 2 ), '1234567,89' );
-    checkResult( getTranslatedNumber( 1234567.89, minimumFractionalDigitCount: 2, usesGrouping: true ), '1 234 567,89' );
-    //checkResult( getTranslatedNumber( 1234567.89, minimumFractionalDigitCount: 2, usesGrouping: true, maximumFractionalDigitCount: 4 ), '1 234 567,8900' );
+    checkResult( getTranslatedNumber( 1234567.89, minimumFractionalDigitCount: 3 ), '1234567,890' );
+    checkResult( getTranslatedNumber( 1234567.89, usesGrouping: true, minimumFractionalDigitCount: 3 ), '1 234 567,890' );
+    //checkResult( getTranslatedNumber( 1234567.89, currency: 'EUR' ), '1234567,89 €' );
+    //checkResult( getTranslatedNumber( 1234567.89, currency: 'EUR', usesGrouping: true ), '1 234 567,89 €' );
+    //checkResult( getTranslatedNumber( 1234567.89, currency: 'EUR', usesGrouping: true, minimumFractionalDigitCount: 3 ), '1 234 567,890 €' );
+
+    setLanguageCode( 'pt' );
+    checkResult( getTranslatedNumber( 12 ), '12' );
+    checkResult( getTranslatedNumber( 12, minimumIntegerDigitCount: 3 ), '012' );
+    checkResult( getTranslatedNumber( 12, minimumFractionalDigitCount: 3 ), '12,000' );
+    checkResult( getTranslatedNumber( 12.89 ), '12,89' );
+    checkResult( getTranslatedNumber( 12.89, minimumFractionalDigitCount: 3 ), '12,890' );
+    checkResult( getTranslatedNumber( 12.89, maximumFractionalDigitCount: 0 ), '13' );
+    checkResult( getTranslatedNumber( 1234567.89 ), '1234567,89' );
+    checkResult( getTranslatedNumber( 1234567.89, usesGrouping: true ), '1.234.567,89' );
+    checkResult( getTranslatedNumber( 1234567.89, minimumFractionalDigitCount: 3 ), '1234567,890' );
+    checkResult( getTranslatedNumber( 1234567.89, usesGrouping: true, minimumFractionalDigitCount: 3 ), '1.234.567,890' );
+    //checkResult( getTranslatedNumber( 1234567.89, currency: 'BRL' ), 'R\$ 1234567,89' );
+    //checkResult( getTranslatedNumber( 1234567.89, currency: 'BRL', usesGrouping: true ), 'R\$ 1.234.567,89' );
+    //checkResult( getTranslatedNumber( 1234567.89, currency: 'BRL', usesGrouping: true, minimumFractionalDigitCount: 3 ), 'R\$ 1.234.567,890' );
 
     print( 'Testing : getTranslatedDate' );
 
-    final date = DateTime.parse( '2024-08-15' );
+    var date = DateTime.parse( '2024-08-02' );
 
     setLanguageCode( 'en' );
-    checkResult( getTranslatedDate( date ), '08/15/2024' );
+    checkResult( getTranslatedDate( date ), '8/2/2024' );
+    checkResult( getTranslatedDate( date, timeZone: 'UTC' ), '8/2/2024' );
+    //checkResult( getTranslatedDate( date, yearPattern: 'y', monthPattern: 'MM', dayPattern: 'dd' ), '8/02/2024' );
+    //checkResult( getTranslatedDate( date, yearPattern: 'y', monthPattern: 'MM', dayPattern: 'dd', timeZone: 'UTC' ), '8/02/2024' );
 
     setLanguageCode( 'fr' );
-    checkResult( getTranslatedDate( date ), '15/08/2024' );
+    checkResult( getTranslatedDate( date ), '02/08/2024' );
+    checkResult( getTranslatedDate( date, timeZone: 'UTC' ), '02/08/2024' );
+    //checkResult( getTranslatedDate( date, yearPattern: 'y', monthPattern: 'MM', dayPattern: 'dd' ), '02/08/2024' );
+    //checkResult( getTranslatedDate( date, yearPattern: 'y', monthPattern: 'MM', dayPattern: 'dd', timeZone: 'UTC' ), '02/08/2024' );
 
     print( 'Testing : getTranslatedTime' );
 
-    final time = DateTime.parse( '2024-08-15T14:30:00Z' );
+    var time = DateTime.parse( '2024-08-02T07:05:00Z' );
 
     setLanguageCode( 'en' );
-    checkResult( getTranslatedTime( time ), '14:30:00' );
+    checkResult( getTranslatedTime( time ), '07:05:00' );
+    checkResult( getTranslatedTime( time, timeZone: 'UTC' ), '07:05:00' );
+    checkResult( getTranslatedTime( time, hourPattern: 'HH', minutePattern: 'mm', secondPattern: 'ss' ), '07:05:00' );
+    checkResult( getTranslatedTime( time, hourPattern: 'HH', minutePattern: 'mm', secondPattern: 'ss', timeZone: 'UTC' ), '07:05:00' );
 
     setLanguageCode( 'fr' );
-    checkResult( getTranslatedTime( time ), '14:30:00' );
+    checkResult( getTranslatedTime( time ), '07:05:00' );
+    checkResult( getTranslatedTime( time, timeZone: 'UTC' ), '07:05:00' );
+    checkResult( getTranslatedTime( time, hourPattern: 'HH', minutePattern: 'mm', secondPattern: 'ss' ), '07:05:00' );
+    checkResult( getTranslatedTime( time, hourPattern: 'HH', minutePattern: 'mm', secondPattern: 'ss', timeZone: 'UTC' ), '07:05:00' );
 
     print( 'Testing : getBrowserLanguageCode' );
 
-    final browserLanguageText = 'fr-FR,de;q=0.8,en-US;q=0.5,en-GB;q=0.3,es;q=0.2,pt-BR;q=0.1,ru;q=0.1,ja;q=0.1,it;q=0.1,nl-NL;q=0.1';
+    var browserLanguageText = 'fr-FR,de;q=0.8,en-US;q=0.5,en-GB;q=0.3,es;q=0.2,pt-BR;q=0.1,ru;q=0.1,ja;q=0.1,it;q=0.1,nl-NL;q=0.1';
 
     var browserLanguageCode = getBrowserLanguageCode( browserLanguageText, [ 'en', 'fr', 'de' ], '-' );
     checkResult( browserLanguageCode, 'fr' );

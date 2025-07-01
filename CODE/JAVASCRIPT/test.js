@@ -56,7 +56,7 @@ function runTests(
     checkResult( getTranslatedNumber( 1234567.89 ), '1234567.89' );
     checkResult( getTranslatedNumber( 1234567.89, { usesGrouping: true } ), '1,234,567.89' );
     checkResult( getTranslatedNumber( 1234567.89, { minimumFractionalDigitCount: 3 } ), '1234567.890' );
-    checkResult( getTranslatedNumber( 1234567.89, { minimumFractionalDigitCount: 3, usesGrouping: true } ), '1,234,567.890' );
+    checkResult( getTranslatedNumber( 1234567.89, { usesGrouping: true, minimumFractionalDigitCount: 3 } ), '1,234,567.890' );
     checkResult( getTranslatedNumber( 1234567.89, { currency: 'USD' } ), '$1234567.89' );
     checkResult( getTranslatedNumber( 1234567.89, { currency: 'USD', usesGrouping: true } ), '$1,234,567.89' );
     checkResult( getTranslatedNumber( 1234567.89, { currency: 'USD', usesGrouping: true, minimumFractionalDigitCount: 3 } ), '$1,234,567.890' );
@@ -71,7 +71,7 @@ function runTests(
     checkResult( getTranslatedNumber( 1234567.89 ), '1234567,89' );
     checkResult( getTranslatedNumber( 1234567.89, { usesGrouping: true } ), '1 234 567,89' );
     checkResult( getTranslatedNumber( 1234567.89, { minimumFractionalDigitCount: 3 } ), '1234567,890' );
-    checkResult( getTranslatedNumber( 1234567.89, { minimumFractionalDigitCount: 3, usesGrouping: true } ), '1 234 567,890' );
+    checkResult( getTranslatedNumber( 1234567.89, { usesGrouping: true, minimumFractionalDigitCount: 3 } ), '1 234 567,890' );
     checkResult( getTranslatedNumber( 1234567.89, { currency: 'EUR' } ), '1234567,89 €' );
     checkResult( getTranslatedNumber( 1234567.89, { currency: 'EUR', usesGrouping: true } ), '1 234 567,89 €' );
     checkResult( getTranslatedNumber( 1234567.89, { currency: 'EUR', usesGrouping: true, minimumFractionalDigitCount: 3 } ), '1 234 567,890 €' );
@@ -86,30 +86,42 @@ function runTests(
     checkResult( getTranslatedNumber( 1234567.89 ), '1234567,89' );
     checkResult( getTranslatedNumber( 1234567.89, { usesGrouping: true } ), '1.234.567,89' );
     checkResult( getTranslatedNumber( 1234567.89, { minimumFractionalDigitCount: 3 } ), '1234567,890' );
-    checkResult( getTranslatedNumber( 1234567.89, { minimumFractionalDigitCount: 3, usesGrouping: true } ), '1.234.567,890' );
+    checkResult( getTranslatedNumber( 1234567.89, { usesGrouping: true, minimumFractionalDigitCount: 3 } ), '1.234.567,890' );
     checkResult( getTranslatedNumber( 1234567.89, { currency: 'BRL' } ), 'R\$ 1234567,89' );
     checkResult( getTranslatedNumber( 1234567.89, { currency: 'BRL', usesGrouping: true } ), 'R\$ 1.234.567,89' );
     checkResult( getTranslatedNumber( 1234567.89, { currency: 'BRL', usesGrouping: true, minimumFractionalDigitCount: 3 } ), 'R\$ 1.234.567,890' );
 
     console.log( 'Testing : getTranslatedDate' );
 
-    let date = new Date( '2024-08-15' );
+    let date = new Date( '2024-08-02' );
 
     setLanguageCode( 'en' );
-    checkResult( getTranslatedDate( date ), '08/15/2024' );
+    checkResult( getTranslatedDate( date ), '8/2/2024' );
+    checkResult( getTranslatedDate( date, { timeZone: 'UTC' } ), '8/2/2024' );
+    checkResult( getTranslatedDate( date, { yearPattern: 'y', monthPattern: 'MM', dayPattern: 'dd' } ), '08/02/2024' );
+    checkResult( getTranslatedDate( date, { yearPattern: 'y', monthPattern: 'MM', dayPattern: 'dd', timeZone: 'UTC' } ), '08/02/2024' );
 
     setLanguageCode( 'fr' );
-    checkResult( getTranslatedDate( date ), '15/08/2024' );
+    checkResult( getTranslatedDate( date ), '02/08/2024' );
+    checkResult( getTranslatedDate( date, { timeZone: 'UTC' } ), '02/08/2024' );
+    checkResult( getTranslatedDate( date, { yearPattern: 'y', monthPattern: 'MM', dayPattern: 'dd' } ), '02/08/2024' );
+    checkResult( getTranslatedDate( date, { yearPattern: 'y', monthPattern: 'MM', dayPattern: 'dd', timeZone: 'UTC' } ), '02/08/2024' );
 
     console.log( 'Testing : getTranslatedTime' );
 
-    let time = new Date( '2024-08-15T14:30:00Z' );
+    let time = new Date( '2024-08-02T07:05:00Z' );
 
     setLanguageCode( 'en' );
-    checkResult( getTranslatedTime( time ), '14:30:00' );
+    checkResult( getTranslatedTime( time ), '07:05:00' );
+    checkResult( getTranslatedTime( time, { timeZone: 'UTC' } ), '07:05:00' );
+    checkResult( getTranslatedTime( time, { hourPattern: 'HH', minutePattern: 'mm', secondPattern: 'ss' } ), '07:05:00' );
+    checkResult( getTranslatedTime( time, { hourPattern: 'HH', minutePattern: 'mm', secondPattern: 'ss', timeZone: 'UTC' } ), '07:05:00' );
 
     setLanguageCode( 'fr' );
-    checkResult( getTranslatedTime( time ), '14:30:00' );
+    checkResult( getTranslatedTime( time ), '07:05:00' );
+    checkResult( getTranslatedTime( time, { timeZone: 'UTC' } ), '07:05:00' );
+    checkResult( getTranslatedTime( time, { hourPattern: 'HH', minutePattern: 'mm', secondPattern: 'ss' } ), '07:05:00' );
+    checkResult( getTranslatedTime( time, { hourPattern: 'HH', minutePattern: 'mm', secondPattern: 'ss', timeZone: 'UTC' } ), '07:05:00' );
 
     console.log( 'Testing : getTranslatedCountryName' );
 
