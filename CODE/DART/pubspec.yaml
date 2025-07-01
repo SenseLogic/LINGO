@@ -1,7 +1,11 @@
 name: lingo
 description: Text localization and processing.
+homepage: https://github.com/senselogic/LINGO
+repository: https://github.com/senselogic/LINGO
 version: 0.1.5
+
 environment:
   sdk: '>=3.0.0 <4.0.0'
+
 dependencies:
   intl: ^0.20.2

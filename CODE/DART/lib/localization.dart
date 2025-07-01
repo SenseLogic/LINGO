@@ -2,7 +2,6 @@
 
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
-import 'package:intl/number_symbols_data.dart';
 
 // -- CONSTANTS
 
@@ -749,9 +748,9 @@ String getTranslatedText(
 
             if ( colonCharacterIndex >= 0 )
             {
-                if ( matchesTranslationSpecifier( translatedText.substring( 0, colonCharacterIndex ), valueByNameMap as Map<String, dynamic>?, languageTag_ ) )
+                if ( matchesTranslationSpecifier( translatedText.substring( 0, colonCharacterIndex ), valueByNameMap, languageTag_ ) )
                 {
-                    return getSubstitutedText( translatedText.substring( colonCharacterIndex + 1 ), valueByNameMap as Map<String, dynamic>? );
+                    return getSubstitutedText( translatedText.substring( colonCharacterIndex + 1 ), valueByNameMap );
                 }
             }
         }
